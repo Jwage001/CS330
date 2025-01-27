@@ -25,11 +25,14 @@ public class Inventory
      * @param lhs stack whose size will be increased
      * @param rhs stack whose size we need to examine
      */
-    public static void mergeStacks(ItemStack lhs, ItemStack rhs)
+    public static void mergeStacks(ItemStack lhs, ItemStack rhs)    // WORK ON_______________________________________________________________________________________________________________________
     {
         // lhs needs to have items added to it.
         // rhs's size is needed
         // lhs.????(rhs.????)
+        lhs.addItems(rhs.size());
+
+
     }
 
     /**
@@ -91,10 +94,13 @@ public class Inventory
      *
      * @return true if the current size is equal to capacity
      */
-    public boolean isFull()
+    public boolean isFull()           // WORK ON_______________________________________________________________________________________________________________________
     {
         // Replace the next line
-        return false;
+        //return false;
+        return this.slots.currentSize == this.capacity;
+    
+    
     }
 
     /**
@@ -115,10 +121,23 @@ public class Inventory
      *
      * @return matching stack if one was found and `null` otherwise
      */
-    public ItemStack findMatchingItemStack(ItemStack key)
+    public ItemStack findMatchingItemStack(ItemStack key)    // WORK ON_______________________________________________________________________________________________________________________
     {
         // Add the necessary sequential search loop
 
+        //not 100% if I need to set up the iterator or if its been already, trial and error is da way
+        LinkedList.Node<ItemStack> temp = this.slots.head;
+
+        while (temp != null) {
+            if (temp.data.equals(key)) {
+                return temp.data;
+            }
+
+            //if not a match
+            temp = temp.next;
+        }
+
+        //if it never finds a match :(
         return null;
     }
 
@@ -127,12 +146,39 @@ public class Inventory
      *
      * @param toAdd data that we want to store in a Node and add to the list
      */
-    public void addItemStackNoCheck(ItemStack toAdd)
+    public void addItemStackNoCheck(ItemStack toAdd)    // WORK ON_______________________________________________________________________________________________________________________
     {
         LinkedList.Node<ItemStack> newNode = new LinkedList.Node<>(toAdd);
 
         // Use the appendNode/add logic from Review 1 as your starting point
         // Once we reach this function... we know that `toAdd` must be stored
+
+        //if the funciton is empty
+        if (this.slots.head == null) {
+            this.slots.head = newNode;
+            this.slots.tail = newNode;
+            this.slots.currentSize = 1;
+
+        } else {
+
+            this.slots.tail.next = newNode;  // debugger doesnt like this, if it failes redo this perchance??
+            this.slots.tail = newNode;
+
+            /* 
+            // example code from guthub
+            // of the existing list
+            this.tail.next = newNode;
+
+            // Update tail;
+            this.tail = this.tail.next;
+            // tail = newNode; 
+            */
+
+
+            this.slots.currentSize++;
+
+        }
+        
     }
 
     /**
